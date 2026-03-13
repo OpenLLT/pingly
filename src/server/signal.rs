@@ -1,14 +1,14 @@
 use std::time::Duration;
 
-use axum_server::Handle;
+use axum_server::{Address, Handle};
 use tokio::time::sleep;
 use tracing::info;
 
 #[cfg(target_os = "linux")]
 use super::tracker::capture::TcpCaptureTrack;
 
-pub(super) async fn graceful_shutdown(
-    handle: Handle,
+pub(super) async fn graceful_shutdown<A: Address>(
+    handle: Handle<A>,
     #[cfg(target_os = "linux")] capture: Option<TcpCaptureTrack>,
 ) {
     tokio::signal::ctrl_c()
